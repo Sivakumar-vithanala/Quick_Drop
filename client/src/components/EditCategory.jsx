@@ -62,10 +62,10 @@ const EditCategory = ({ close, fetchData, data : CategoryData }) => {
         if (!file) {
             return
         }
-
+        setLoading(true)
         const res = await uploadImage(file)
         const { data: Imageres } = res
-
+        setLoading(false)
         setData((preve) => {
             return {
                 ...preve,
@@ -78,7 +78,7 @@ const EditCategory = ({ close, fetchData, data : CategoryData }) => {
         <section className='fixed top-0 bottom-0 left-0 right-0 p-4 bg-neutral-800 bg-opacity-60 flex items-center justify-center'>
             <div className='bg-white max-w-4xl w-full p-4 rounded'>
                 <div className='flex items-center justify-between'>
-                    <h1 className='font-semibold'>Category</h1>
+                    <h1 className='font-semibold'>Update Category</h1>
                     <button onClick={close} className='w-fit block ml-auto'>
                         <IoCloseCircleOutline size={25} />
                     </button>
@@ -117,7 +117,12 @@ const EditCategory = ({ close, fetchData, data : CategoryData }) => {
                                 <div className={`
                             ${!data.name ? "bg-gray-300" : "border-primary-200 hover:bg-primary-100"}  
                                 px-4 py-2 rounded cursor-pointer border font-medium
-                            `}>Upload Image</div>
+                            `}>
+                                {
+                                    loading ? "Loading..." : "Upload Image"
+                                }
+                                
+                            </div>
 
                                 <input disabled={!data.name} onChange={handleUploadCategoryImage} type='file' id='uploadCategoryImage' className='hidden' />
                             </label>

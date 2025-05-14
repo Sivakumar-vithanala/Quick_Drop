@@ -8,6 +8,7 @@ import { logout } from '../store/userSlice'
 import toast from 'react-hot-toast'
 import AxiosToastError from '../utils/AxiosToastError'
 import { LuFolderSymlink } from "react-icons/lu";
+import isAdmin from '../utils/isAdmin'
 
 
 
@@ -46,19 +47,35 @@ const UserMenu = ({ close }) => {
       <div className='font-semibold'>My Account</div>
 
       <div className='text-sm flex items-center gap-2'>
-        <span className='max-w-52 text-ellipsis line-clamp-1'>{user.name || user.mobile}</span>
+        <span className='max-w-52 text-ellipsis line-clamp-1'>{user.name || user.mobile} <span className='text-medium text-one-orginal'>({user.role === "ADMIN" ? "Admin" : ""})</span> </span>
         <Link onClick={handleClose} to={"/dashboard/profile"} className='hover:text-primary'><LuFolderSymlink size={24} /></Link>
       </div>
       <Divider />
       <div className='text-sm grid gap-2'>
 
-        <Link onClick={handleClose} to={"/dashboard/category"} className='px-4 hover:bg-orange-200 py-1'>Category</Link>
+        {
+          isAdmin(user.role) && (
+            <Link onClick={handleClose} to={"/dashboard/category"} className='px-4 hover:bg-orange-200 py-1'>Category</Link>
+          )
+        }
 
-        <Link onClick={handleClose} to={"/dashboard/subcategory"} className='px-4 hover:bg-orange-200 py-1'>Sub Category</Link>
+        {
+          isAdmin(user.role) && (
+            <Link onClick={handleClose} to={"/dashboard/subcategory"} className='px-4 hover:bg-orange-200 py-1'>Sub Category</Link>
+          )
+        }
 
-        <Link onClick={handleClose} to={"/dashboard/uploadproduct"} className='px-4 hover:bg-orange-200 py-1'>Upload Product</Link>
+        {
+          isAdmin(user.role) && (
+            <Link onClick={handleClose} to={"/dashboard/uploadproduct"} className='px-4 hover:bg-orange-200 py-1'>Upload Product</Link>
+          )
+        }
 
-        <Link onClick={handleClose} to={"/dashboard/product"} className='px-4 hover:bg-orange-200 py-1'>Product</Link>
+        {
+          isAdmin(user.role) && (
+            <Link onClick={handleClose} to={"/dashboard/product"} className='px-4 hover:bg-orange-200 py-1'>Product</Link>
+          )
+        }
 
         <Link onClick={handleClose} to={"/dashboard/myorders"} className='px-4 hover:bg-orange-200 py-1'>My Orders</Link>
 
