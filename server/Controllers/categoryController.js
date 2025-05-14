@@ -7,6 +7,8 @@ export const AddCategoryController = async (req, res) => {
     if (!name || !image) {
       return res.status(400).json({
         message: "Enter Required Fields",
+        error: true,
+        success: false,
       });
     }
 
@@ -31,6 +33,52 @@ export const AddCategoryController = async (req, res) => {
       success: true,
       error: false,
     });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export const getCategoryController = async (req, res) => {
+  try {
+    const data = await CategoryModel.find();
+
+    return res.json({
+      data: data,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      success: false,
+      error: true,
+    });
+  }
+};
+
+export const updateCategoryController = async(req,res)=>{
+    try {
+        const { _id ,name, image } = req.body 
+
+        const update = await CategoryModel.updateOne({
+            _id : _id
+        },{
+           name, 
+           image 
+        })
+
+        return res.json({
+          message:"Update Category",
+          success:true,
+          error:false,
+          data:update
+        })
+
+
   } catch (error) {
     return res.status(500).json({
       message: error.message || error,
