@@ -7,8 +7,8 @@ const DashBoard = () => {
   const user = useSelector(state => state.user)
   
   return (
-    <section className='bg-pink-200'>
-            <div className='container mx-auto p-3 grid grid-cols-[250px,1fr]'>
+    <section className='bg-two-light'>
+            <div className='container mx-auto p-0.5 grid grid-cols-[230px,1fr] text-slate-950 font-semibold'>
            {/**left for menu */}
                 <div className='py-4 sticky top-24 max-h-[calc(100vh-96px)] overflow-y-auto hidden lg:block border-r'>
                     <UserMenu />

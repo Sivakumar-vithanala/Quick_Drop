@@ -8,6 +8,7 @@ import EditCategory from '../components/EditCategory'
 import ConfirmBox from '../components/ConfirmBox'
 import toast from 'react-hot-toast'
 import AxiosToastError from '../utils/AxiosToastError'
+import { useSelector } from 'react-redux'
 
 const CategoryPage = () => {
 
@@ -20,42 +21,48 @@ const CategoryPage = () => {
     image: "",
   })
   const [openConfirmBoxDelete, setOpenConfirmBoxDelete] = useState(false)
-  const [deleteCategory,setDeleteCategory] = useState({
-    _id:""
+  const [deleteCategory, setDeleteCategory] = useState({
+    _id: ""
   })
 
-  const fetchCategory = async () => {
-    try {
-      setLoading(true)
-      const res = await Axios({
-        ...SummaryApi.getCategory
-      })
-      const { data: resData } = res
-
-      if (resData.success) {
-        setCategoryData(resData.data)
-      }
-
-    } catch (error) {
-
-    } finally {
-      setLoading(false)
-    }
-  }
+  const allCategory = useSelector(state => state.product.allCategory)
 
   useEffect(() => {
-    fetchCategory()
-  }, [])
+    setCategoryData(allCategory)
+  }, [allCategory])
 
-  const handleDeleteCategory =async() => {
+  // const fetchCategory = async () => {
+  //   try {
+  //     setLoading(true)
+  //     const res = await Axios({
+  //       ...SummaryApi.getCategory
+  //     })
+  //     const { data: resData } = res
+
+  //     if (resData.success) {
+  //       setCategoryData(resData.data)
+  //     }
+
+  //   } catch (error) {
+
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   fetchCategory()
+  // }, [])
+
+  const handleDeleteCategory = async () => {
     try {
       const res = await Axios({
         ...SummaryApi.deleteCategory,
         data: deleteCategory
       })
 
-      const {data : resData} = res
-      if(resData.success){
+      const { data: resData } = res
+      if (resData.success) {
         toast.success(resData.message)
         fetchCategory()
         setOpenConfirmBoxDelete(false)
@@ -88,7 +95,7 @@ const CategoryPage = () => {
 
                 <div className='items-center h-9 flex gap-2'>
                   <button onClick={() => { setOpenEdit(true); setEditData(category) }} className='flex-1 bg-two-light hover:bg-two-dark rounded-lg font-normal py-1'>Edit</button>
-                  <button onClick={()=>{setOpenConfirmBoxDelete(true);setDeleteCategory(category)}} className='flex-1 bg-one-light hover:bg-one-dark rounded-lg font-normal py-1'>Delete</button>
+                  <button onClick={() => { setOpenConfirmBoxDelete(true); setDeleteCategory(category) }} className='flex-1 bg-one-light hover:bg-one-dark rounded-lg font-normal py-1'>Delete</button>
                 </div>
 
               </div>
@@ -117,7 +124,7 @@ const CategoryPage = () => {
 
       {
         openConfirmBoxDelete && (
-          <ConfirmBox close={()=>setOpenConfirmBoxDelete(false)} cancel={()=>setOpenConfirmBoxDelete(false)} confirm={handleDeleteCategory}/>
+          <ConfirmBox close={() => setOpenConfirmBoxDelete(false)} cancel={() => setOpenConfirmBoxDelete(false)} confirm={handleDeleteCategory} />
         )
       }
     </section>

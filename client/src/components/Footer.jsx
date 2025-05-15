@@ -5,21 +5,20 @@ import { FaWhatsapp } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 
-
-
 const Footer = () => {
   return (
     <footer className='border-t-2'>
-      <div className='container mx-auto p-4 text-center flex flex-col lg:flex-row lg:justify-between gap-4'>
+      <div className='container mx-auto pt-6 text-center flex flex-col lg:flex-row lg:justify-between gap-4'>
         <p>© All Rights Reserved 2025</p>
 
-        <div className='flex items-center gap-4 justify-center text-2xl'>
-          <a href="" className='hover:text-primary'><FaFacebook /></a>
-          <a href="" className='hover:text-primary'><FaInstagram/></a>
-          <a href="" className='hover:text-primary'><FaWhatsapp/></a>
-          <a href="" className='hover:text-primary'><FaLinkedin/></a>
-          <a href="" className='hover:text-primary'><FaTwitter/></a>
+        <div className='flex items-center justify-center gap-4 text-3xl'>
+          <a href="" className='hover:text-one-orginal'><FaFacebook /></a>
+          <a href="" className='hover:text-one-orginal'><FaInstagram /></a>
+          <a href="" className='hover:text-one-orginal'><FaWhatsapp /></a>
+          <a href="" className='hover:text-one-orginal'><FaLinkedin /></a>
+          <a href="" className='hover:text-one-orginal'><FaTwitter /></a>
         </div>
+
       </div>
     </footer>
   )

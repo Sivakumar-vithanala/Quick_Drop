@@ -79,7 +79,7 @@ const Header = () => {
                                             {
                                                 openUserMenu && (
                                                     <div className='absolute right-0 top-16'>
-                                                        <div className='bg-orange-500 rounded-md p-4 min-w-52 lg:shadow-lg'>
+                                                        <div className='bg-one-orginal rounded-md p-4 min-w-52 lg:shadow-lg'>
                                                             <UserMenu close={handleCloseUserMenu}/>
                                                         </div>
                                                     </div>
@@ -90,7 +90,7 @@ const Header = () => {
                                         <button onClick={redirectToLoginPage} className='text-lg px-2'> Login </button>
                                     )
                                 }
-                                <button className='flex items-center gap-2 bg-green-700 hover:bg-green-500 px-3 py-3 rounded text-white'>
+                                <button className='flex items-center gap-2 bg-two-dark hover:bg-two-orginal px-3 py-3 rounded text-white'>
                                     {/* add to cart icons */}
                                     <div className='animate-bounce'>
                                         <BsCart4 size={26} />
