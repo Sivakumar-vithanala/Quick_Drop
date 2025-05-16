@@ -3,10 +3,10 @@ import SummaryApi from "../common/SummaryApi";
 
 const fetchUserDetails = async () => {
   try {
-    const resp = await Axios({
+    const res = await Axios({
       ...SummaryApi.userDetails,
     });
-    return resp.data;
+    return res.data;
   } catch (error) {
     console.log(error);
   }

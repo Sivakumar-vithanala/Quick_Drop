@@ -36,3 +36,75 @@ export const AddSubCategoryController = async (req, res) => {
   }
 };
 
+export const getSubCategoryController = async (req, res) => {
+  try {
+    const data = await SubCategoryModel.find()
+      .sort({ createdAt: -1 })
+      .populate("category");
+    return res.json({
+      message: "Sub Category Data",
+      data: data,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export const updateSubCategoryController = async (req, res) => {
+  try {
+    const { _id, name, image, category } = req.body;
+    const checkSub = await SubCategoryModel.findById(_id);
+
+    if (!checkSub) {
+      return res.status(400).json({
+        message: "Check Your _Id",
+        error: true,
+        success: false,
+      });
+    }
+
+    const updateSubCategory = await SubCategoryModel.findByIdAndUpdate(_id, {
+      name,
+      image,
+      category,
+    });
+
+    return res.json({
+      message: "Update Successfully!",
+      data: updateSubCategory,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export const deleteSubCategoryController = async (req, res) => {
+  try {
+    const { _id } = req.body;
+    const deleteSub = await SubCategoryModel.findByIdAndDelete(_id);
+    return res.json({
+      message: "Delete Successfully!",
+      data: deleteSub,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+};

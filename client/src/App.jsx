@@ -31,13 +31,11 @@ function App() {
 
       if (resData.success) {
         dispatch(setAllCategory(resData.data))
-   
+
       }
 
     } catch (error) {
-
-    } finally {
-
+      console.log("No Data");
     }
   }
 
