@@ -9,6 +9,8 @@ import { useDispatch } from 'react-redux';
 import { setAllCategory } from './store/productSlice';
 import Axios from './utils/Axios';
 import SummaryApi from './common/SummaryApi';
+// import { setAllCategory,setAllSubCategory,setLoadingCategory } from './store/productSlice';
+
 
 
 
@@ -23,19 +25,20 @@ function App() {
 
   const fetchCategory = async () => {
     try {
-
+      dispatch(setLoadingCategory(true))
       const res = await Axios({
         ...SummaryApi.getCategory
       })
       const { data: resData } = res
 
       if (resData.success) {
-        dispatch(setAllCategory(resData.data))
-
+         dispatch(setAllCategory(responseData.data.sort((a, b) => a.name.localeCompare(b.name))))
       }
 
     } catch (error) {
       console.log("No Data");
+    }finally{
+       dispatch(setLoadingCategory(false))
     }
   }
 

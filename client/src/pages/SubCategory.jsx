@@ -61,7 +61,7 @@ const SubCategory = () => {
       header: "Image",
       cell: ({ row }) => {
         return <div className='flex items-center justify-center'>
-          <img src={row.original.image} alt={row.original.name} className='w-20 h-20 cursor-pointer' onClick={setImageURL(row.original.image)} />
+          <img src={row.original.image} alt={row.original.name} className='w-20 h-20 cursor-pointer' onClick={()=> setImageURL(row.original.image)} />
         </div>
       }
     }),

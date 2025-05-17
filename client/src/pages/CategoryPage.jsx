@@ -25,34 +25,34 @@ const CategoryPage = () => {
     _id: ""
   })
 
-  const allCategory = useSelector(state => state.product.allCategory)
-
-  useEffect(() => {
-    setCategoryData(allCategory)
-  }, [allCategory])
-
-  // const fetchCategory = async () => {
-  //   try {
-  //     setLoading(true)
-  //     const res = await Axios({
-  //       ...SummaryApi.getCategory
-  //     })
-  //     const { data: resData } = res
-
-  //     if (resData.success) {
-  //       setCategoryData(resData.data)
-  //     }
-
-  //   } catch (error) {
-
-  //   } finally {
-  //     setLoading(false)
-  //   }
-  // }
+  // const allCategory = useSelector(state => state.product.allCategory)
 
   // useEffect(() => {
-  //   fetchCategory()
-  // }, [])
+  //   setCategoryData(allCategory)
+  // }, [allCategory])
+
+  const fetchCategory = async () => {
+    try {
+      setLoading(true)
+      const res = await Axios({
+        ...SummaryApi.getCategory
+      })
+      const { data: resData } = res
+
+      if (resData.success) {
+        setCategoryData(resData.data)
+      }
+
+    } catch (error) {
+
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchCategory()
+  }, [])
 
   const handleDeleteCategory = async () => {
     try {
