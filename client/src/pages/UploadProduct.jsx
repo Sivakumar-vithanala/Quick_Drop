@@ -5,6 +5,11 @@ import Loading from '../components/Loading';
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { useSelector } from 'react-redux';
 import { VscClose } from "react-icons/vsc";
+import AddFieldComponent from '../components/AddFieldComponent';
+import Axios from '../utils/Axios';
+import SummaryApi from '../common/SummaryApi';
+import AxiosToastError from '../utils/AxiosToastError'
+import successAlert from '../utils/SuccessAleart';
 
 
 
@@ -14,7 +19,7 @@ const UploadProduct = () => {
     image: [],
     category: [],
     subCategory: [],
-    unit: [],
+    unit: "",
     stock: "",
     price: "",
     discount: "",
@@ -26,6 +31,10 @@ const UploadProduct = () => {
   const allCategory = useSelector(state => state.product.allCategory)
   const [selectCategory, setSelectCategory] = useState("")
   const [selectSubCategory, setSelectSubCategory] = useState("")
+  const allSubCategory = useSelector(state => state.product.allSubCategory)
+
+  const [openAddField, setOpenAddField] = useState(false)
+  const [fieldName, setFieldName] = useState("")
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -76,6 +85,47 @@ const UploadProduct = () => {
     })
   }
 
+  const handleRemoveSubCategory = async (index) => {
+    data.subCategory.splice(index, 1)
+    setData((preve) => {
+      return {
+        ...preve
+      }
+    })
+  }
+
+  const handleAddField = () => {
+    setData((preve) => {
+      return {
+        ...preve,
+        more_details: {
+          ...preve.more_details,
+          [fieldName]: ""
+        }
+      }
+    })
+    setFieldName("")
+    setOpenAddField(false)
+  }
+
+  const handleSubmit = async(e)=>{
+    e.preventDefault()
+    try {
+      const res = await Axios({
+        ...SummaryApi.createProuct,
+        data:data
+      })
+
+      const {data:resData} = res
+        if(resData.success){
+          successAlert(resData.message)
+        }
+
+    } catch (error) {
+      AxiosToastError(error)
+    }
+  }
+
   return (
     <section>
       <div className='p-2 bg-white shadow-md flex items-center justify-between'>
@@ -83,7 +133,7 @@ const UploadProduct = () => {
       </div>
 
       <div className='grid p-4'>
-        <form className='grid gap-3'>
+        <form className='grid gap-5' onSubmit={handleSubmit}>
 
           <div className='grid gap-2'>
             <label htmlFor="name">Name</label>
@@ -176,18 +226,18 @@ const UploadProduct = () => {
               <select name="" id="" className='bg-blue-50 w-full p-2 rounded' value={selectSubCategory}
                 onChange={(e) => {
                   const value = e.target.value
-                  const category = allCategory.find(el => el.id === value)
+                  const subCategory = allSubCategory.find(el => el.id === value)
                   setData((preve) => {
                     return {
                       ...preve,
-                      subCategory: [...preve.subCategory.category]
+                      subCategory: [...preve.subCategory.subCategory]
                     }
                   })
                   selectSubCategory("")
                 }}>
-                <option value={""}>Select Category</option>
+                <option value={""} className='text-neutral-600'>Select Sub Category</option>
                 {
-                  allCategory.map((c, index) => {
+                  allSubCategory.map((c, index) => {
                     return (
                       <option value={c?._id}>{c.name}</option>
                     )
@@ -196,11 +246,11 @@ const UploadProduct = () => {
               </select>
               <div className='flex flex-wrap gap-3'>
                 {
-                  data.category.map((c, index) => {
+                  data.subCategory.map((c, index) => {
                     return (
-                      <div key={c._id + index + "ProductSection"} className='text-sm flex items-center gap-1 bg-blue-50 mt-2'>
+                      <div key={c._id + index + "SubCategory"} className='text-sm flex items-center gap-1 bg-blue-50 mt-2'>
                         <p>{c.name}</p>
-                        <div className='hover:text-one-dark cursor-pointer' onClick={() => handleRemoveCategory(index)}>
+                        <div className='hover:text-one-dark cursor-pointer' onClick={() => handleRemoveSubCategory(index)}>
                           <VscClose size={20} />
                         </div>
                       </div>
@@ -211,11 +261,71 @@ const UploadProduct = () => {
             </div>
           </div>
 
+          <div className='grid gap-2'>
+            <label htmlFor="unit">Unit</label>
+            <input id='unit' type="text" placeholder='Enter Product Unit' name='unit' value={data.unit} onChange={handleChange} required className='bg-blue-50 p-2 outline-none border focus-within:border-two-orginal rounded' />
+          </div>
+
+          <div className='grid gap-2'>
+            <label htmlFor="stock">Number Of Stock</label>
+            <input id='stock' type="number" placeholder='Enter Product Stock' name='stock' value={data.stock} onChange={handleChange} required className='bg-blue-50 p-2 outline-none border focus-within:border-two-orginal rounded' />
+          </div>
+
+          <div className='grid gap-2'>
+            <label htmlFor="price">Price</label>
+            <input id='price' type="number" placeholder='Enter Product Price' name='price' value={data.price} onChange={handleChange} required className='bg-blue-50 p-2 outline-none border focus-within:border-two-orginal rounded' />
+          </div>
+
+          <div className='grid gap-2'>
+            <label htmlFor="discount">Discount</label>
+            <input id='discount' type="number" placeholder='Enter Product Discount' name='discount' value={data.discount} onChange={handleChange} required className='bg-blue-50 p-2 outline-none border focus-within:border-two-orginal rounded' />
+          </div>
+
+          {/** add more fields */}
+
+
+            {
+              Object?.keys(data?.more_details).map((k, index) => {
+                return (
+                  <div className='grid gap-2'>
+                    <label htmlFor={k}>{k}</label>
+                    <input id={k} type="text" value={data?.more_details[k]}
+                      onChange={(e) => {
+                        const value = e.target.value
+                        setData((preve) => {
+                          return {
+                            ...preve,
+                            more_details: {
+                              ...preve.more_details,
+                              [k]: value
+                            }
+                          }
+                        })
+                      }}
+                      required className='bg-blue-50 p-2 outline-none border focus-within:border-two-orginal rounded' />
+                  </div>
+                )
+              })
+            }
+
+
+          <div onClick={() => setOpenAddField(true)} className='hover:bg-one-orginal bg-white py-1 px-3 w-32 text-center font-semibold border border-two-dark hover:text-neutral-900 cursor-pointer rounded'>
+            Add Fields
+          </div>
+            <button className='bg-one-orginal hover:bg-one-dark py-2 rounded font-semibold'>
+              Submit
+            </button>
         </form>
       </div>
       {
         viewImageUrl && (
           <viewImage url={viewImageUrl} close={() => setViewImageUrl("")} />
+        )
+      }
+
+      {
+        openAddField && (
+          <AddFieldComponent value={fieldName} onChange={(e) => setFieldName(e.target.value)} submit={handleAddField} close={() => setOpenAddField(false)} />
         )
       }
     </section>

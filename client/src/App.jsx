@@ -6,7 +6,7 @@ import fetchUserDetails from './utils/fetchUerDetails';
 import { useEffect } from 'react';
 import { setUserDetails } from './store/userSlice';
 import { useDispatch } from 'react-redux';
-import { setAllCategory } from './store/productSlice';
+import { setAllCategory,setAllSubCategory } from './store/productSlice';
 import Axios from './utils/Axios';
 import SummaryApi from './common/SummaryApi';
 // import { setAllCategory,setAllSubCategory,setLoadingCategory } from './store/productSlice';
@@ -32,19 +32,40 @@ function App() {
       const { data: resData } = res
 
       if (resData.success) {
-         dispatch(setAllCategory(responseData.data.sort((a, b) => a.name.localeCompare(b.name))))
+        dispatch(setAllCategory(responseData.data.sort((a, b) => a.name.localeCompare(b.name))))
       }
 
     } catch (error) {
       console.log("No Data");
-    }finally{
-       dispatch(setLoadingCategory(false))
+    } finally {
+      dispatch(setLoadingCategory(false))
     }
   }
+
+   const fetchSubCategory = async () => {
+    try {
+      dispatch(setLoadingCategory(true))
+      const res = await Axios({
+        ...SummaryApi.getSubCategory
+      })
+      const { data: resData } = res
+
+      if (resData.success) {
+        dispatch(setAllSubCategory(responseData.data.sort((a, b) => a.name.localeCompare(b.name))))
+      }
+
+    } catch (error) {
+      console.log("No Data");
+    } finally {
+      dispatch(setLoadingCategory(false))
+    }
+  }
+
 
   useEffect(() => {
     fetchUser()
     fetchCategory()
+    fetchSubCategory()
   }, [])
 
   return (
