@@ -8,7 +8,7 @@ import SummaryApi from '../common/SummaryApi';
 import toast from 'react-hot-toast';
 import AxiosToastError from '../utils/AxiosToastError';
 
-const UploadSubCategoryModel = ({ close }) => {
+const UploadSubCategoryModel = ({ close,fetchData }) => {
 
     const [subCategoryData, setSubCategoryData] = useState({
         name: "",
@@ -68,10 +68,15 @@ const UploadSubCategoryModel = ({ close }) => {
 
             const { data: resData } = res
 
+            console.log("responseData",responseData)
+
             if (resData.success) {
                 toast.success(resData.message)
                 if (close) {
                     close()
+                }
+                if(fetchData){
+                    fetchData()
                 }
             }
         } catch (error) {
@@ -88,11 +93,12 @@ const UploadSubCategoryModel = ({ close }) => {
                         <CgCloseR size={25} />
                     </button>
                 </div>
+
                 <form className='my-4 grid gap-4' onSubmit={handleSubmitSubCategory}>
 
                     <div className='grid gap-2'>
                         <label htmlFor='name'>Name</label>
-                        <input type="text" id='name' name='name' value={subCategoryData.name} onChange={handleChange} className='p-3 bg-blue-50 border outline-none focus-within:border-two-light rounded' />
+                        <input id='name' name='name' value={subCategoryData.name} onChange={handleChange} className='p-3 bg-blue-50 border outline-none focus-within:border-two-light rounded' />
                     </div>
 
                     <div className='grid gap-2'>
@@ -101,7 +107,7 @@ const UploadSubCategoryModel = ({ close }) => {
                             <div className='border h-36 w-full lg:w-36 bg-blue-50 flex items-center justify-center'>
                                 {
                                     !subCategoryData.image ? (
-                                        <p className=''>No Image</p>
+                                        <p className='text-sm text-neutral-400'>No Image</p>
                                     ) : (
                                         <img
                                             alt='subCategory'
@@ -119,24 +125,17 @@ const UploadSubCategoryModel = ({ close }) => {
                             </label>
                         </div>
                     </div>
-                    <div className='grid gap-1'>
-
-                        <label htmlFor="">Select Category</label>
-                        <select name="" id="" className='bg-blue-50 border p-4'>
-                            <option value="">Select Category</option>
-                        </select>
-
-                    </div>
 
                     <div className='grid gap-1'>
-                        <label htmlFor=""> Seclect Category</label>
+                        <label> Select Category</label>
                         <div className='border focus-within:border-one-orginal rounded'>
+                            
                             {/*** Display Value */}
                             <div className='flex flex-wrap gap-2'>
                                 {
                                     subCategoryData.category.map((cat, index) => {
                                         return (
-                                            <p key={cat._id + "seclectedvalue"} className='bg-white shadow-md px-1 m-1 flex items-center gap-4'>
+                                            <p key={cat._id + "selectedValue"} className='bg-white shadow-md px-1 m-1 flex items-center gap-4'>
                                                 {cat.name}
                                                 <div className='cursor-pointer hover:text-one-orginal' onClick={() => handleRemoveCategorySelected(cat._id)}>
                                                     <IoIosCloseCircleOutline size={23} />
@@ -146,6 +145,7 @@ const UploadSubCategoryModel = ({ close }) => {
                                     })
                                 }
                             </div>
+
                             {/*** Seclect Category */}
                             <select className='w-full p-2 bg-transparent outline-none border'
                                 onChange={(e) => {

@@ -1,10 +1,11 @@
 import {Router} from 'express'
 import auth from '../middleware/auth.js'
-import { createProductController } from '../Controllers/productControllr.js'
+import { createProductController, getProductController } from '../Controllers/productController.js'
 
 const productRouter = Router()
 
 
 productRouter.post("/create",auth,createProductController)
+productRouter.post("/get",getProductController)
 
 export default productRouter

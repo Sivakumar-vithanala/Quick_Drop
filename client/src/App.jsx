@@ -2,14 +2,13 @@ import { Outlet, Route, Routes } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import toast, { Toaster } from 'react-hot-toast';
-import fetchUserDetails from './utils/fetchUerDetails';
+import fetchUserDetails from './utils/fetchUerDetails.js';
 import { useEffect } from 'react';
-import { setUserDetails } from './store/userSlice';
+import { setUserDetails } from './store/userSlice.js';
 import { useDispatch } from 'react-redux';
-import { setAllCategory,setAllSubCategory } from './store/productSlice';
 import Axios from './utils/Axios';
 import SummaryApi from './common/SummaryApi';
-// import { setAllCategory,setAllSubCategory,setLoadingCategory } from './store/productSlice';
+import { setAllCategory,setAllSubCategory,setLoadingCategory } from './store/productSlice.js';
 
 
 
@@ -32,11 +31,11 @@ function App() {
       const { data: resData } = res
 
       if (resData.success) {
-        dispatch(setAllCategory(responseData.data.sort((a, b) => a.name.localeCompare(b.name))))
+        dispatch(setAllCategory(resData.data.sort((a, b) => a.name.localeCompare(b.name))))
       }
 
     } catch (error) {
-      console.log("No Data");
+      console.error("Error fetching category data:", error);
     } finally {
       dispatch(setLoadingCategory(false))
     }
@@ -44,20 +43,20 @@ function App() {
 
    const fetchSubCategory = async () => {
     try {
-      dispatch(setLoadingCategory(true))
+      // dispatch(setLoadingCategory(true))
       const res = await Axios({
         ...SummaryApi.getSubCategory
       })
       const { data: resData } = res
 
       if (resData.success) {
-        dispatch(setAllSubCategory(responseData.data.sort((a, b) => a.name.localeCompare(b.name))))
+        dispatch(setAllSubCategory(resData.data.sort((a, b) => a.name.localeCompare(b.name))))
       }
 
     } catch (error) {
-      console.log("No Data");
+      console.error("Error fetching category data:", error);
     } finally {
-      dispatch(setLoadingCategory(false))
+      dispatch(setLoadingCategory(false));
     }
   }
 
